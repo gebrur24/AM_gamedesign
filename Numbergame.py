@@ -36,10 +36,12 @@ def game (level, hiNum):
 
 
 print ("*****************************")
-print ("*     Number Game yay!!!     ")
+print ("    Number Game yay!!!     ")
+print('******************************')
 title="guessing number game"
-print('this is a guessing game and you will only get 5 tries and i hope you have fun')
-
+print('***********************************************')
+print('This is a guessing game and you will only get 5 tries and i hope you have fun*')
+print('***********************************************')
 continuePlaying = True
 count = 0
 level = 1
@@ -53,7 +55,9 @@ while continuePlaying:
     except:
         print('You must enter a number')
     if selection == 1:
-        print("chose a number between 1 and 25, so be smart!!!")
+        print('*************************************************')
+        print("choose a level if you dare i will warn you this are tricky abut if u want to play then just choose a level on the menu and type whatever number you believe the answer to be")
+        print ('************************************************')
     elif selection == 2:
         game(level, 25)
     elif selection == 3:
