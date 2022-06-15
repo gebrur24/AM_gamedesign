@@ -1,2 +1,5 @@
-#instructions for my first game with character
-characters are fun
+#This is a fun game and in  this game we are 
+trying to get the character to eat the circle. 
+To play the game you have to use  keys A, W, D, S 
+in order to move the little guy. 
+In order to exit the game you have to click exit!!
