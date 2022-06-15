@@ -11,11 +11,8 @@
 #picture = pygame. transform. scale(picture, (1280, 720))
 #bg=pygame.image.load('ClassStuff\CircleEatsSquare\Images\\bgSmaller.jpg')
 
-from ast import While
-from dis import Instruction
-from email import message
+
 import sys
-from tkinter import Button
 import pygame, time,os,random, math
 pygame.init()#initialize the pygame package
 
@@ -84,7 +81,7 @@ squareClr=colors.get("limeGreen")
 circleClr=colors.get("blue")
 backgrnd=colors.get("Pink")
 
-#collors
+#colors
 squareClr=colors.get("pink")
 mountainSquare=pygame.Rect(250,320,180,250)
 circleClr=colors.get("blue")
@@ -96,9 +93,10 @@ Game = False
 speed=2
 
 #Menu items
-message = ["Instructions", "Setting", "Game 1", "Game 2", "Scoreboard", "Exit"]
+menuMessage = ["Instructions", "Setting", "Game 1", "Game 2", "Scoreboard", "Exit"]
+menuSetting = ["Background","Screensize","Sound off/on"]
 
-def menu():
+def menu(message):
     screen.fill(colors.get("white"))
     ymenu = 155
     Title = TITLE_FONT.render("Circle Eats Square", 1, colors.get("blue"))
@@ -134,30 +132,80 @@ def menu():
                 if Button_1.collidepoint((mx, my)):
                     Instructions()
                 if Button_2.collidepoint((mx, my)):
-                    # settings
+                    setting(menuSetting)
                     print()
                 if Button_3.collidepoint((mx, my)):
-                    game()
+                    game("HWimage.py")
                 if Button_4.collidepoint((mx, my)):
                     game()
                 if Button_5.collidepoint((mx, my)):
-                    #scoreboard()
+                    scoreboard()
                     print()
                 if Button_6.collidepoint((mx, my)):
                     pygame.quit()
                     sys.exit()
+def setting(message):
+    screen.fill(colors.get("white"))
+    ymenu = 155
+    Title = TITLE_FONT.render("Settings", 1, colors.get("blue"))  
+    xd = WIDTH//2 - (Title.get_width()//2)
+    screen.blit(Title, (xd, 100))
+    Button_1 = pygame.Rect(30, 145, 150, 50)
+    Button_2 = pygame.Rect(30, 195, 150, 50)
+    pygame.draw.rect(screen, colors.get("limeGreen"), Button_1)
+    pygame.draw.rect(screen, colors.get("limeGreen"), Button_2)
+    Button_3 = pygame.Rect(30, 245, 150, 50)
+    for item in message:
+        text = MENU_FONT.render(item, 1, colors.get('blue'))
+        screen.blit(text, (40, ymenu))
+        pygame.display.update()
+        pygame.time.delay(50)
+        ymenu += 50
+    while True:
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mousePos = pygame.mouse.get_pos()
+                mx = mousePos[0]
+                my = mousePos[1]
+            if Button_1.collidepoint((mx, my)):
+                    # backgroundcolor()
+                    print("if you want to change your background button")
+            if Button_2.collidepoint((mx, my)):
+                    # screensize()
+                    print("if you want to expand or minimize your screen size")
+            if Button_3.collidepoint((mx, my)):
+                   #Sound off/on()
+                    pygame.quit()
+                    sys.exit()
+
 def scoreboard():
     #rendering text objects
     Title = TITLE_FONT.render("Scoreboard", 1, colors.get("blue"))
-    text1 = MENU_FONT.render("Yes", 1, colors.get("blue"))
-    text2 = MENU_FONT.render("No", 1, colors.get("blue"))               
-                
+    text1 = MENU_FONT.render( 1, colors.get("blue"))
+    text2 = MENU_FONT.render( 1, colors.get("blue"))  
+
+    myFile = open("instructions.txt", "r")
+    content = myFile.readlines()
+
+    #var to controll change of line
+    yinstructions = 150
+    for line in content:
+        Instruc = MENU_FONT.render(line[0:-1], 1, colors.get("blue"))
+        screen.blit(Instruc, (40, yinstructions))
+        pygame.display.update()
+        pygame.time.delay(50)
+        yinstructions += 40
+
+    myFile.close()
 
 def Instructions():
     #rendering text objects
-    Title = TITLE_FONT.render("Instructions", 1, colors.get("blue"))
-    text1 = MENU_FONT.render("Yes", 1, colors.get("blue"))
-    text2 = MENU_FONT.render("No", 1, colors.get("blue"))
+    Title = TITLE_FONT.render("instructions.txt", 1, colors.get("blue"))
+    text1 = MENU_FONT.render( 1, colors.get("blue"))
+    text2 = MENU_FONT.render( 1, colors.get("blue"))
 
     #fills screen with white
     screen.fill(colors.get("white"))
@@ -262,4 +310,4 @@ def game():
         pygame.draw.rect(screen, squareClr, insSquare)
         pygame.display.update()
 
-menu()
+menu(menuMessage)
