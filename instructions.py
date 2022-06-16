@@ -145,6 +145,7 @@ def menu(message):
                     pygame.quit()
                     sys.exit()
 def setting(message):
+    global mx,my
     screen.fill(colors.get("white"))
     ymenu = 155
     Title = TITLE_FONT.render("Settings", 1, colors.get("blue"))  
@@ -172,7 +173,7 @@ def setting(message):
                 my = mousePos[1]
             if Button_1.collidepoint((mx, my)):
                     # backgroundcolor()
-                    print("if you want to change your background button")
+                    print={"white":(255,255,255),"pink":(255,0,255),"blue":(0,0,255),"limeGreen":(153,255,51)}
             if Button_2.collidepoint((mx, my)):
                     # screensize()
                     print("if you want to expand or minimize your screen size")
