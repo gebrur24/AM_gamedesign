@@ -145,6 +145,8 @@ def menu(message):
                     pygame.quit()
                     sys.exit()
 def setting(message):
+    global screen
+    global menuSetting
     global mx,my
     screen.fill(colors.get("white"))
     ymenu = 155
@@ -173,10 +175,12 @@ def setting(message):
                 my = mousePos[1]
             if Button_1.collidepoint((mx, my)):
                     # backgroundcolor()
-                    print={"white":(255,255,255),"pink":(255,0,255),"blue":(0,0,255),"limeGreen":(153,255,51)}
+                    menucolor= (random.randint (255,255,255), random.randint(255,0,255), random.randint(0,0,255), random.randint(153,255,51))
+                    print("color change")
             if Button_2.collidepoint((mx, my)):
                     # screensize()
-                    print("if you want to expand or minimize your screen size")
+                    WIDTH+=100
+                    HEIGHT+=100
             if Button_3.collidepoint((mx, my)):
                    #Sound off/on()
                     pygame.quit()
