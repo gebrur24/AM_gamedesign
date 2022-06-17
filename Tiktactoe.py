@@ -611,6 +611,8 @@ screen=pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("Tic Tac Te")  #change the title of my window
 backgrnd=colors.get("pink")
 
+clock = pygame.time.Clock()
+
 #game Variable
 player=1
 markers=[]
@@ -742,5 +744,6 @@ while Game:
             
     pygame.display.update() 
     pygame.time.delay(100)
-
+    clock.tick(60)
+    
     
