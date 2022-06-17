@@ -133,7 +133,6 @@ def menu(message):
                     Instructions()
                 if Button_2.collidepoint((mx, my)):
                     setting(menuSetting)
-                    print()
                 if Button_3.collidepoint((mx, my)):
                     game("HWimage.py")
                 if Button_4.collidepoint((mx, my)):
