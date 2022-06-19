@@ -6,8 +6,13 @@
 # checkWinner() 
 # Game_end()
 
-import os, random, time, pygame, math, datetime,sys
-from turtle import delay
+import pygame, time, random, math, sys, os
+os.system('cls')
+pygame.init()
+player= 1
+WIDTH=700 
+HEIGHT=700
+
 os.system('cls')
 
 pygame.init()
@@ -654,6 +659,7 @@ def draw_Markers():
             yValue +=1
         xValue +=1
     pygame.display.update() 
+
 def checkWinner():
     print()
     global gameOver, winner 
@@ -695,25 +701,86 @@ def checkWinner():
             gameOver= True
             winner=0
       
+
+def x_winner():
+    screen.fill(backgrnd)
+    sx=str(scoreOne)
+    so=str(scoreTwo)
+    text=MENU_FONT.render('Player X won!', 1, (cirClr))
+    textScore=MENU_FONT.render('Player X score = '+sx, 1, (cirClr))
+    text2Score=MENU_FONT.render('Player O score = '+so, 1, (cirClr))
+    screen.blit(textScore, (WIDTH/4, HEIGHT/1.5))
+    screen.blit(text2Score, (WIDTH/1.75, HEIGHT/1.5))
+    screen.blit(text, (WIDTH/2.5, HEIGHT/2.5))
+    pygame.display.update()
+    pygame.time.delay(2000)
+    gameEnd()
+
+def o_winner():
+    screen.fill(backgrnd)
+    sx=str(scoreOne)
+    so=str(scoreTwo)
+    texto=MENU_FONT.render('Player O won!', 1, (cirClr))
+    textScore=MENU_FONT.render('Player X score = '+sx, 1, (cirClr))
+    text2Score=MENU_FONT.render('Player O score = '+so, 1, (cirClr))
+    screen.blit(textScore, (WIDTH/4, HEIGHT/1.5))
+    screen.blit(text2Score, (WIDTH/1.75, HEIGHT/1.5))
+    screen.blit(texto, (WIDTH/2.5, HEIGHT/2.5))
+    pygame.display.update()
+    pygame.time.delay(2000)
+    gameEnd() 
+
+def tieGame():
+    screen.fill(backgrnd)
+    textTie=MENU_FONT.render("It's a tie!", 1, (cirClr))
+    screen.blit(textTie, (WIDTH/2.5, HEIGHT/2.5))
+    pygame.display.update()
+    pygame.time.delay(2000)
+    gameEnd()
+
+
+
+
+
+
 def gameEnd():
-    global Game, xScore, oScore
+    global Game, xScore, oScore, markers
     xClr=(0,0,0)
     zero_Array()
     if winner == 1:
         xScore+=1
         text= "x wins"
-        text= WINNER_FONT.render(text,1,xClr)
+        
     if winner ==-1:
         oScore+=1
         text= "O wins"
-        text= WINNER_FONT.render(text,1,xClr)
+       
     if winner == 0:
-        text= WINNER_FONT.render("tie",1,xClr) 
-    #create a new window 
-    screen.fill(colors.get("white"))
-    screen.blit(text, (WIDTH//2, HEIGHT//2))
-    pygame.display.update()
-    pygame.time.delay(3000)
+        text= "tie"
+    text= WINNER_FONT.render(text,1,xClr)
+    while True:
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mousePos = pygame.mouse.get_pos()
+                mx = mousePos[0]
+                my = mousePos[1]
+                if Button_1.collidepoint((mx, my)):
+                    Button_1 = pygame.Rect(30, 145, 150, 50)
+                    pygame.draw.rect(screen, colors.get("limeGreen"), Button_1)
+                    markers=[]
+                    zero_Array()
+                    break 
+                if Button_2.collidepoint((mx, my)):
+                    Button_2 = pygame.Rect(30, 195, 150, 50)
+                    pygame.draw.rect(screen, colors.get("limeGreen"), Button_2)
+                    setting(menuSetting) 
+                    import sys
+                    sys.exit()
+        pygame.display.update()
+    
         
     
 zero_Array()
@@ -739,11 +806,13 @@ while Game:
                 checkWinner()
                 print (winner)
                    
-                if gameOver:
-                    gameEnd()            
+        if gameOver:
+            gameover=False
+            gameEnd()            
             
     pygame.display.update() 
     pygame.time.delay(100)
     clock.tick(60)
-    
+
+
     
