@@ -12,8 +12,11 @@
 #bg=pygame.image.load('ClassStuff\CircleEatsSquare\Images\\bgSmaller.jpg')
 
 
+from dis import Instruction
 import sys
 import pygame, time,os,random, math
+
+
 pygame.init()#initialize the pygame package
 
 # print(pygame.font.get_fonts())
@@ -130,13 +133,13 @@ def menu(message):
                 mx = mousePos[0]
                 my = mousePos[1]
                 if Button_1.collidepoint((mx, my)):
-                    Instructions()
+                    Instruction()#instructions is not working anymore
                 if Button_2.collidepoint((mx, my)):
                     setting(menuSetting)
                 if Button_3.collidepoint((mx, my)):
-                    game("HWimage.py")
+                    gameEnd ("HWimage.py")
                 if Button_4.collidepoint((mx, my)):
-                    game()
+                    game ()
                 if Button_5.collidepoint((mx, my)):
                     scoreboard()
                     print()
@@ -149,8 +152,7 @@ def setting(message):
     global mx,my
     screen.fill(colors.get("white"))
     ymenu = 155
-    Title = TITLE_FONT.render("Settings", 1, colors.get("blue"))  
-    xd = WIDTH//2 - (Title.get_width()//2)
+    Title = TITLE_FONT.render("Settings", 1, colors.get("blue"))   
     screen.blit(Title, (xd, 100))
     Button_1 = pygame.Rect(30, 145, 150, 50)
     Button_2 = pygame.Rect(30, 195, 150, 50)
@@ -182,9 +184,9 @@ def setting(message):
                     HEIGHT+=100
             if Button_3.collidepoint((mx, my)):
                    #Sound off/on()
-                    pygame.quit()
-                    sys.exit()
 
+             clock=pygame.time.Clock()
+   
 def scoreboard():
     #rendering text objects
     Title = TITLE_FONT.render("Scoreboard", 1, colors.get("blue"))
