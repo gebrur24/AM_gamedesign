@@ -32,7 +32,7 @@ winner = 0 #this means tie - save winner here either 1 or -1
 lineWidth=10 #line thickness
 Game=True #control game
 MxMy=(0,0) #clicks
-crClr=colors.get("lblue") #colors
+cirClr=colors.get("lblue") #colors
 xClr=colors.get("lblue")
 
 #function to zero array
@@ -59,7 +59,7 @@ def draw_Markers():
                 pygame.draw.line(screen,xClr,(xValue * WIDTH//3 + 15, yValue * HEIGHT//3 + 15), (xValue * WIDTH//3 + WIDTH//3-15, yValue * WIDTH//3 + WIDTH//3-15),lineWidth)
                 pygame.draw.line(screen, xClr,(xValue*WIDTH//3 +WIDTH//3-15, yValue*HEIGHT//3+15),(xValue *WIDTH//3+15,yValue*HEIGHT//3+HEIGHT//3-15),lineWidth)
             if y==-1:
-                pygame.draw.circle(screen,crClr,(xValue*WIDTH//3+WIDTH//6,yValue*HEIGHT//3 +HEIGHT//6),WIDTH//6-15, lineWidth)
+                pygame.draw.circle(screen,cirClr,(xValue*WIDTH//3+WIDTH//6,yValue*HEIGHT//3 +HEIGHT//6),WIDTH//6-15, lineWidth)
             yValue +=1
         xValue +=1
     pygame.display.update()
@@ -68,9 +68,9 @@ def x_winner():
     screen.fill(backgrnd)
     sx=str(scoreOne)
     so=str(scoreTwo)
-    text=MENU_FONT.render('Player X won!', 1, (crClr))
-    textScore=MENU_FONT.render('Player X score = '+sx, 1, (crClr))
-    text2Score=MENU_FONT.render('Player O score = '+so, 1, (crClr))
+    text=MENU_FONT.render('Player X won!', 1, (cirClr))
+    textScore=MENU_FONT.render('Player X score = '+sx, 1, (cirClr))
+    text2Score=MENU_FONT.render('Player O score = '+so, 1, (cirClr))
     screen.blit(textScore, (WIDTH/4, HEIGHT/1.5))
     screen.blit(text2Score, (WIDTH/1.75, HEIGHT/1.5))
     screen.blit(text, (WIDTH/2.5, HEIGHT/2.5))
@@ -81,9 +81,9 @@ def o_winner():
     screen.fill(backgrnd)
     sx=str(scoreOne)
     so=str(scoreTwo)
-    texto=MENU_FONT.render('PLAYER O IS THE WINNER', 1, (crClr))
-    textScore=MENU_FONT.render('Player X score = '+sx, 1, (crClr))
-    text2Score=MENU_FONT.render('Player O score = '+so, 1, (crClr))
+    texto=MENU_FONT.render('Player O won!', 1, (cirClr))
+    textScore=MENU_FONT.render('Player X score = '+sx, 1, (cirClr))
+    text2Score=MENU_FONT.render('Player O score = '+so, 1, (cirClr))
     screen.blit(textScore, (WIDTH/4, HEIGHT/1.5))
     screen.blit(text2Score, (WIDTH/1.75, HEIGHT/1.5))
     screen.blit(texto, (WIDTH/2.5, HEIGHT/2.5))
@@ -92,7 +92,7 @@ def o_winner():
     gameEnd() 
 def tieGame():
     screen.fill(backgrnd)
-    textTie=MENU_FONT.render("It's a tie!", 1, (crClr))
+    textTie=MENU_FONT.render("It's a tie!", 1, (cirClr))
     screen.blit(textTie, (WIDTH/2.5, HEIGHT/2.5))
     pygame.display.update()
     pygame.time.delay(2000)
@@ -153,7 +153,9 @@ def gameEnd():
     global markers 
     screen.fill(backgrnd)
     #question
-    textagn=MENU_FONT.render('Would you like to play again?', 1, (crClr))
+    textagn=MENU_FONT.render('Would you like to play again?', 1, (cirClr))
+    textMOre=MENU_FONT.render('Click yes twice to play again. If not click no', 1, (cirClr))
+    screen.blit(textMOre, (WIDTH/4, HEIGHT/2.3))
     screen.blit(textagn,(WIDTH/2.8, HEIGHT/2.8))
     #buttons yes and no
     Button_yes=pygame.Rect(WIDTH/4, HEIGHT//2, 100, 50)
@@ -161,10 +163,12 @@ def gameEnd():
     pygame.draw.rect(screen, colors.get('pink'), Button_yes)
     pygame.draw.rect(screen, colors.get('pink'), Button_no)
     #text yes and no
-    textYes=MENU_FONT.render('Yes', 1, (crClr))
-    textNo=MENU_FONT.render('No', 1, (crClr))
+    textYes=MENU_FONT.render('Yes', 1, (cirClr))
+    textNo=MENU_FONT.render('No', 1, (cirClr))
     screen.blit(textYes, (WIDTH//4, HEIGHT//2))
     screen.blit(textNo, (3*WIDTH//4, HEIGHT//2))
+    textWin1=MENU_FONT.render('Player X won the whole game!', 1, (cirClr))
+    textWin2=MENU_FONT.render('Player O won the whole game!', 1, (cirClr))
     pygame.display.update()
     run=True 
     while run:
@@ -176,20 +180,23 @@ def gameEnd():
                 mx=mousePos[0]
                 my=mousePos[1]
                 if Button_yes.collidepoint((mx, my)):
-                    print('yes')
                     run = False
+                    markers.clear()
                     markers = []
                     zero_Array()
                     pygame.display.update()
                 if Button_no.collidepoint((mx, my)): #why button taking so long?
-                    text=MENU_FONT.render('Bye!', 1, (crClr))
+                    text=MENU_FONT.render('Bye!', 1, (cirClr))
                     screen.fill(backgrnd)
                     screen.blit(text, (WIDTH/2.5, HEIGHT/2.5))
+                    if scoreOne>scoreTwo:
+                        screen.blit(textWin1, (WIDTH/3.5, HEIGHT/1.5))
+                    if scoreOne<scoreTwo:
+                        screen.blit(textWin2, (WIDTH/3.5, HEIGHT/1.5))
                     pygame.display.update()
-                    pygame.time.delay(1000)
+                    pygame.time.delay(2000)
                     pygame.quit()
                     sys.exit()
-    print('end of function')
                     #go to menu
                 
 
@@ -216,6 +223,5 @@ while Game:
                 if gameOver:
                     gameOver = False
                     gameEnd()
-                    print('i am back')
 pygame.display.update()
 clock.tick(60)

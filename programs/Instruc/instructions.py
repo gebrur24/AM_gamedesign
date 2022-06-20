@@ -12,7 +12,6 @@
 #bg=pygame.image.load('ClassStuff\CircleEatsSquare\Images\\bgSmaller.jpg')
 
 
-from dis import Instruction
 import sys
 import pygame, time,os,random, math
 
@@ -133,19 +132,21 @@ def menu(message):
                 mx = mousePos[0]
                 my = mousePos[1]
                 if Button_1.collidepoint((mx, my)):
-                    Instruction()#instructions is not working anymore
+                    Instructions()
                 if Button_2.collidepoint((mx, my)):
                     setting(menuSetting)
                 if Button_3.collidepoint((mx, my)):
-                    gameEnd ("HWimage.py")
+                    game()
                 if Button_4.collidepoint((mx, my)):
-                    game ()
+                    game()
                 if Button_5.collidepoint((mx, my)):
                     scoreboard()
                     print()
                 if Button_6.collidepoint((mx, my)):
                     pygame.quit()
                     sys.exit()
+
+                    
 def setting(message):
     global screen
     global menuSetting
@@ -212,7 +213,7 @@ def Instructions():
     Title = TITLE_FONT.render("instructions.txt", 1, colors.get("blue"))
     text1 = MENU_FONT.render( 1, colors.get("blue"))
     text2 = MENU_FONT.render( 1, colors.get("blue"))
-
+   
     #fills screen with white
     screen.fill(colors.get("white"))
 
