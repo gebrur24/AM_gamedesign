@@ -125,4 +125,30 @@ if __name__ == '__main__':
 
 
 
-   
+   class alien(Ship):
+    
+    def __init__(self, game, x, y):
+        self.x = x
+        self.game = game
+        self.y = y 
+
+    def draw(self):
+        pygame.draw.rect(self.game.screen,(81,43,88), pygame.rect (self.x, self.y, 30,30))
+
+        self.y+= 0.05
+        alien = alien(self, 30, 30)
+        alien.draw()
+
+    def __init__(self, x, y, color, health=100):
+        super().__init__(x, y, health)
+        self.ship_img, self.laser_img = self.COLOR_MAP[color]
+        self.mask = pygame.mask.from_surface(self.ship_img)
+
+    def move(self, vel):
+        self.y += vel
+
+    def shoot(self):
+        if self.cool_down_counter == 0:
+            laser = laser(self.x-20, self.y, self.laser_img)
+            self.lasers.append(laser)
+            self.cool_down_counter = 1   

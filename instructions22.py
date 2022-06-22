@@ -112,7 +112,7 @@ def Instructions():
     pygame.draw.rect(screen, colors.get("limeGreen"), Button_1)
 
     #Instructions
-    myFile = open("Instructions.txt", "r")
+    myFile = open("programs\Instruc\instructions.txt", "r")
     content = myFile.readlines()
 
     #var to control change of line
