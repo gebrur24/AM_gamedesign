@@ -3,3 +3,14 @@ trying to get the character to eat the circle.
 To play the game you have to use  keys A, W, D, S 
 in order to move the little guy. 
 In order to exit the game you have to click exit!!
+
+
+ keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT] and X > 0: # left
+            ship.x -= player_vel
+        if keys[pygame.K_RIGHT] and X < 500 - width:
+            ship.x += player_vel
+        if keys[pygame.K_UP] and Y > 0: #up
+            ship.y -= player_vel
+        if keys[pygame.K_DOWN] and Y < 500 - HEIGHT: #down
+            ship.y += player_vel
