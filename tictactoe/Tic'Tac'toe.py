@@ -744,7 +744,7 @@ def tieGame():
     pygame.display.update()
     pygame.time.delay(2000)
     gameEnd()
-
+gameOver= False
 def checkWinner():
     global gameOver, winner, scoreOne, scoreTwo
     x_position=0

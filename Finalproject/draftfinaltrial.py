@@ -24,12 +24,8 @@ red= pygame.image.load("images\pixel_ship_red_small.png")
 blue=pygame.image.load("images\pixel_ship_blue_small.png")
 green=pygame.image.load("images\pixel_ship_green_small.png")
 
-
 # laser to cut fruit
 redlaser=pygame.image.load("images\\red_laser.png")
-greenlaser=pygame.image.load("images\pixel_laser_green.png")
-bluelaser=pygame.image.load("images\pixel_laser_blue.png")
-yellowlaser=pygame.image.load("images\pixel_laser_yellow.png")
 
 #background and character
 bg=pygame.image.load("images\spacebg.png")
@@ -50,7 +46,7 @@ class Ship:
         self.cool_down_counter = 0
 
     def draw(self, window):
-        window.blit(self.ship_img, (self.x, self.y))
+        window.blit(self.ship_img(self.x, self.y))
         pygame.draw.rect(window, (255,0,0), (self.x, self.y, 50,50))
 
     def get_width(self):
@@ -77,16 +73,13 @@ class player(Ship):
 #these are the enemy ship, 
 #not sure if i should try to move them below into the redraw window
 class alien(Ship):
-    COLOR_MAP ={ "red": (red,redlaser), "green": (green,greenlaser),"blue": (blue,bluelaser), "yellow": (yellow,yellowlaser)}
-    color=COLOR_MAP.get("green")
-    def __init__(self, x, y, color, health=100):
-        super().__init__(x, y, health)
-        self.ship_img, self.laser_img = self.COLOR_MAP[color]
+    COLOR_MAP ={ "red": (red), "green": (green),"blue": (blue), "yellow": (yellow)}
+    def __init__(self, x, y, health=100): 
+        super().__init__(x, y, health) 
+        self.ship_img, self.laser_imag= self.COLOR_MAP[color]
         self.mask = pygame.mask.from_surface(self.ship_img)
-
-
-    def move(self, vel):
-        self.y += vel
+    def move(self,vel):
+        self.y +=vel
         
 def Main():
     run = True
@@ -132,10 +125,9 @@ def Main():
             level += 1
             wave_length += 5
             for i in range(wave_length):
-                enemy = alien (random.randrange(100, WIDTH-100), random.randrange(-1500, -100), random.choice(["red", "blue", "green", "yellow"]))
-                enemies.append(enemy)
-
-
+                enemy = alien(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), random.choice(["red", "blue", "green"]))
+                enemies.append(alien)
+                #start at -1500, so they start off the screen
 
        #Keys for moving around the square
         for events in pygame.event.get():
@@ -156,14 +148,11 @@ def Main():
             ship.y += player_vel
        #I am having trouble with the red square staying with in the lines of visable areas
         pygame.time.delay(10) 
+        
 
         for enemy in enemies:
             enemy.move(enemy_vel)
-
-
-
+            
         redraw_window() 
         
-Main() 
-
-
+        Main()      
