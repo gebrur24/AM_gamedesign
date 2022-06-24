@@ -825,7 +825,7 @@ def Level_2():
             self.size = 20
 
         def draw(self):
-            pygame.draw.rect(self.game.screen,  
+            pygame.draw.circle(self.game.screen,  
                             ('pink'),  
                             pygame.Rect(self.x, self.y, self.size, self.size))
             self.y += 0.05
