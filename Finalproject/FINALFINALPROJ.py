@@ -22,6 +22,7 @@ pygame.display.set_caption("My final game")  #change the title of my window
 menuColor = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
 #boxes for menu
 Bx=WIDTH/2.5
+#boxes for the buttons 
 Button_menu=pygame.Rect(Bx, 125, WIDTH/4, 40)
 Button_instruct=pygame.Rect(Bx, 150, WIDTH//4, 40)
 Button_settings=pygame.Rect(Bx, 200, WIDTH/4, 40)
@@ -29,7 +30,7 @@ Button_Game1=pygame.Rect(Bx, 250, WIDTH/4, 40)
 Button_Game2=pygame.Rect(Bx, 300, WIDTH/4, 40)
 Button_score=pygame.Rect(Bx, 350, WIDTH/4, 40)
 Button_exit=pygame.Rect(Bx, 400, WIDTH/4, 40)
-#images
+#images for main characters 
 bg=pygame.image.load(r'C:\\Users\\gebrur24\\OneDrive - Greenhill School\Desktop\AM_gamedesign\AM_gamedesign\\images\\bgSmaller.jpg')
 char = pygame.image.load(r'C:\\Users\\gebrur24\\OneDrive - Greenhill School\Desktop\AM_gamedesign\AM_gamedesign\\images\standing.png')
 char = pygame.transform.scale(char, (50, 50))
@@ -41,13 +42,24 @@ mx = 0
 my = 0
 
 score = 0
+#for the scoreboard
+def scorescreen():
+        global MENU_FONT
+        Game = False
+        screen=pygame.display.set_mode((WIDTH, HEIGHT))
+        screen.fill(menuColor)
+        score1 = str(score)
+        scoretext = MENU_FONT.render('Congrats! Your score is: '+score1, 1, (colors.get("PINK")))
+        screen.blit(scoretext, (WIDTH/4, HEIGHT/8))
+        pygame.display.update()
+        pygame.time.delay(2000)
 
 
 
-def mainMenu():
+def mainMenu():#mainmenu
     global menuColor
-    pygame.draw.rect(screen, colors.get('limeGreen'), Button_settings)
-    Title = TITLE_FONT.render("Ruth's final game ", 1, colors.get("blue"))
+    pygame.draw.rect(screen, colors.get('limeGreen'), Button_settings)#button for the mainmenu
+    Title = TITLE_FONT.render("Ruth's final game ", 1, colors.get("blue"))#Title of the game
     screen.fill(menuColor)
     xd = WIDTH//2 - (Title.get_width()//2)
     screen.blit(Title, (xd, 50))
@@ -151,7 +163,7 @@ def namebox():
     nameClr= (0,105,105)
     bxClr= (200,200,200)
 
-    TITLE_FONT = pygame.font.SysFont('comicsans', WIDTH//20)
+    TITLE_FONT = pygame.font.SysFont('comicsans', WIDTH//20)#fonts
     MENU_FONT = pygame.font.SysFont('comicsans', WIDTH//30)
 
     title=TITLE_FONT.render("Enter Name", 1, bxClr)
@@ -279,7 +291,8 @@ def settings():
                     settings()
             pygame.display.update()
 
-def scoreboard():
+def scoreboard():#this was the hardest part 
+    # hopefully it worked 
     high=0
     title=TITLE_FONT.render('Scoreboard', 1, colors.get('blue'))
     text3 = MENU_FONT.render("Return to Menu", 1, colors.get("blue"))
@@ -298,11 +311,11 @@ def scoreboard():
     #     high=score
     # scrLine=str(high)+"\t " (':')+ "\t" +date.strftime('%m/%d/%Y')+ "\n"
     scrLine=str(yscore)+(': ')+ "\t"+date.strftime("%m-%d-%Y")+ "\n"
-    myFile = open("Finalproject\\finalscoreboard.py", "a")
+    myFile = open("Finalproject\\finalscoreboard.txt", "a")
     myFile.write(str(scrLine))
     myFile.close()
 
-    myFile=open('Finalproject\\finalscoreboard.py', 'r')
+    myFile=open('Finalproject\\finalscoreboard.txt', 'r')
     content = myFile.readlines()
 
     #var to controll change of line
@@ -381,13 +394,13 @@ def Game_1():
 
     # Background
     BG = pygame.transform.scale(pygame.image.load(os.path.join("images\level2bg.png")), (WIDTH, HEIGHT))
-    Button_3 = pygame.Rect(WIDTH//18, HEIGHT/1.1, WIDTH//4, 40)
+    Button_3 = pygame.Rect(WIDTH//18, HEIGHT/1.1, WIDTH//4, 40)# how to make the rectangel for he charcter
     pygame.draw.rect(screen, colors.get("limeGreen"), Button_3)
 
 
     class Laser:
         def __init__(self, x, y, img):
-            self.x = x
+            self.x = x#self is the player/player/hero-person
             self.y = y
             self.img = img
             self.mask = pygame.mask.from_surface(self.img)
@@ -398,18 +411,18 @@ def Game_1():
         def move(self, vel):
             self.y += vel
 
-        def off_screen(self, height):
+        def off_screen(self, height):#make sure it doe not come on to the screen
             return not(self.y <= height and self.y >= 0)
 
-        def collision(self, obj):
+        def collision(self, obj):#when the laser hits the object and BOooM
             return collide(self, obj)
             
 
 
-    class Ship:
+    class Ship:#the good player/hero
         COOLDOWN = 30
 
-        def __init__(self, x, y, health=100):
+        def __init__(self, x, y, health=100):#
             self.x = x
             self.y = y
             self.health = health
@@ -418,7 +431,7 @@ def Game_1():
             self.lasers = []
             self.cool_down_counter = 0
 
-        def draw(self, window):
+        def draw(self, window):#the character being drawn
             pygame.draw.rect(window, (255,0,0), (self.x, self.y, 0,0))
             window.blit(self.ship_img, (self.x, self.y))
             for laser in self.lasers:
@@ -446,7 +459,7 @@ def Game_1():
                 self.lasers.append(laser)
                 self.cool_down_counter = 1
 
-        def get_width(self):
+        def get_width(self):#make sure the lasers are shoot from at an accurate height and width
             return self.ship_img.get_width()
 
         def get_height(self):
@@ -475,9 +488,9 @@ def Game_1():
                 if laser.off_screen(HEIGHT):
                     self.lasers.remove(laser)
                 else:
-                    for obj in objs:
-                        if laser.collision(obj):
-                            objs.remove(obj)
+                    for obj in objs: # the objects r whatever the lasers hit 
+                        if laser.collision(obj):# the lasers hit a collison with an object
+                            objs.remove(obj)#object repersent whatever they hit
                             if laser in self.lasers:
                                 self.lasers.remove(laser)
 
@@ -485,7 +498,8 @@ def Game_1():
             super().draw(window)
             self.healthbar(window)
 
-        def healthbar(self, window):
+        def healthbar(self, window):#life span 
+            #basically how much battery and life they are at
             pygame.draw.rect(window, (255,0,0), (self.x, self.y + self.ship_img.get_height() + 10, self.ship_img.get_width(), 10))
             pygame.draw.rect(window, (0,255,0), (self.x, self.y + self.ship_img.get_height() + 10, self.ship_img.get_width() * (self.health/self.max_health), 10))
 
@@ -493,7 +507,7 @@ def Game_1():
 
     #these are the enemy ship, 
     #not sure if i should try to move them below into the redraw window
-    class Enemy(Ship):
+    class Enemy(Ship):#containts the enemy andtheir colors
         COLOR_MAP = {
                     "red": (RED_SPACE_SHIP, RED_LASER),
                     "green": (GREEN_SPACE_SHIP, GREEN_LASER),
@@ -512,13 +526,19 @@ def Game_1():
             if self.cool_down_counter == 0:
                 laser = Laser(self.x-20, self.y, self.laser_img)
                 self.lasers.append(laser)
+                score+=1 #plus one for their score for the laser
+                #basically every shoot or kill is plus one point
                 self.cool_down_counter = 1
 
 
     def collide(obj1, obj2):# the obj is whatever the laser is colliding with
         offset_x = obj2.x - obj1.x
         offset_y = obj2.y - obj1.y
+        score+=1
         return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
+       
+
+    
 
    
 
@@ -526,16 +546,16 @@ def Game_1():
         run = True
         FPS = 60
         level = 2
-        lives = 7
+        lives = 7 #7 lives dont waste
         main_font = pygame.font.SysFont("comicsans", 50)
         lost_font = pygame.font.SysFont("comicsans", 60)
 
-        enemies = []
-        wave_length = 3
-        enemy_vel = 1
+        enemies = []#whatever was in the color list
+        wave_length = 4 # how many come out at once
+        enemy_vel = 1 # the speed of the enemy
 
         player_vel = 5 #velocity variable which is how fast square can move in a direction
-        laser_vel = 6
+        laser_vel = 6#speed of laser
 
         player = Player(300, 630)
 
@@ -590,8 +610,8 @@ def Game_1():
                     continue
 
             if len(enemies) == 0:
-                level += 1
-                wave_length += 5
+                level += 1#After each 5 come out it changes it to make it harder
+                wave_length += 5 #how many come out at once
                 for i in range(wave_length):
                     enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), random.choice(["red", "blue", "green"]))
                     enemies.append(enemy)
@@ -604,7 +624,7 @@ def Game_1():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     quit()
-
+#keys
             keys = pygame.key.get_pressed()
             if keys[pygame.K_LEFT] and player.x - player_vel > 0: # left
                 player.x -= player_vel
@@ -631,7 +651,7 @@ def Game_1():
                     player.health -= 10
                     enemies.remove(enemy) 
                 elif enemy.y + enemy.get_height() > HEIGHT:
-                    lives -= 1
+                    lives -= 1 # minus one life each time an emeny hits
                     enemies.remove(enemy)
         
 
@@ -640,7 +660,7 @@ def Game_1():
 
 
             player.move_lasers(-laser_vel, enemies)
-
+    #i j wanted to have the main menu their so that way u are ready to start
     def main_menu():
         title_font = pygame.font.SysFont("comicsans", 40)
         run = True
@@ -662,7 +682,8 @@ def Game_1():
     def display_score(score):
         score_surf = self.font.render(f'score: {self.score}',False, )
 
-    
+    #not sure if this is needed but i have it their for safe keeping
+    #not sure though
     def zero_Array(): 
         for x in range(3):
             row= [0] *3
@@ -693,7 +714,7 @@ def Game_1():
         textNo=MENU_FONT.render('  No', 1, (255,255,255))
         screen.blit(textYes, (WIDTH//3.8, HEIGHT//2))
         screen.blit(textNo, (3*WIDTH//4, HEIGHT//2))
-                   
+        #return menu     
         text=MENU_FONT.render('Return to Menu', 1, colors.get('blue'))
         Button_3 = pygame.Rect(WIDTH//18, HEIGHT/1.1, WIDTH//4, 40)
         pygame.draw.rect(screen, colors.get("limeGreen"), Button_3)
@@ -738,7 +759,7 @@ def Game_1():
 
 
 
-
+#new game
 def Game_2():
     global screen
     class Game:
@@ -760,15 +781,15 @@ def Game_2():
             generator = Generator(self)
             rocket = None
 
-            while not done:
+            while not done:#kill 
                 if len(self.aliens) == 0:
                     self.displayText("YAY!!!Winner!!")
 
                 pressed = pygame.key.get_pressed()
-                if pressed[pygame.K_LEFT]:  # sipka doleva
-                    hero.x -= 2 if hero.x > 20 else 0  # leva hranice plochy
-                elif pressed[pygame.K_RIGHT]:  # sipka doprava
-                    hero.x += 2 if hero.x < width - 20 else 0  # prava hranice
+                if pressed[pygame.K_LEFT]:  #keys 
+                    hero.x -= 2 if hero.x > 20 else 0  
+                elif pressed[pygame.K_RIGHT]:  #KEYS
+                    hero.x += 2 if hero.x < width - 20 else 0  
 
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
@@ -832,14 +853,14 @@ def Game_2():
 
         def draw(self):
             pygame.draw.rect(self.game.screen,
-                            ('blue'),
+                            ('blue'),# how to create the char and the size and color
                             pygame.Rect(self.x, self.y, 8, 5))
 
 
     class Generator:
         def __init__(self, game):
-            margin = 30  # mezera od okraju obrazovky
-            width = 50  # mezera mezi alieny
+            margin = 30  #size 
+            width = 50   #size
             for x in range(margin, game.width - margin, width):
                 for y in range(margin, int(game.height / 2), width):
                     game.aliens.append(Alien(game, x, y))
@@ -854,10 +875,10 @@ def Game_2():
             self.game = game
 
         def draw(self):
-            pygame.draw.rect(self.game.screen,  # renderovací plocha
-                            (254, 52, 110),  # barva objektu
+            pygame.draw.rect(self.game.screen,  # 
+                            (254, 52, 110),  #size of the lil moving thingy
                             pygame.Rect(self.x, self.y, 2, 4))
-            self.y -= 2  # poletí po herní ploše nahoru 2px/snímek
+            self.y -= 2  
 
 
     if __name__ == '__main__':
