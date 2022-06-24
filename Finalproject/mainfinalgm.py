@@ -16,7 +16,7 @@ clock=pygame.time.Clock()
 message=['Instructions', 'Settings', 'Game 1', 'Game 2', 'Scoreboard', 'Exit']
 #create dispay wind with any name y like
 screen=pygame.display.set_mode((WIDTH,HEIGHT)) 
-pygame.display.set_caption("My First Game")  #change the title of my window
+pygame.display.set_caption("My final game")  #change the title of my window
 
 
 menuColor = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
@@ -40,6 +40,9 @@ char = pygame.transform.scale(char, (50, 50))
 mx = 0
 my = 0
 
+score = 0
+
+
 
 def mainMenu():
     global menuColor
@@ -58,6 +61,9 @@ def mainMenu():
         pygame.display.update()
         pygame.time.delay(50)
         yMenu += 50
+        
+
+    
     MENU=True
     while MENU:
         for event in pygame.event.get():
@@ -66,7 +72,6 @@ def mainMenu():
                 print("You quit")
                 pygame.display.quit()
                 MENU=False
-
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mousePos = pygame.mouse.get_pos()
                 mx = mousePos[0]
@@ -97,7 +102,7 @@ def Instructions():
     pygame.draw.rect(screen, colors.get("limeGreen"), Button_1)
 
     #Instructions
-    myFile = open("programs\instructions2.txt", "r")
+    myFile = open("programs\instructions234.txt", "r")
     content = myFile.readlines()
 
     #var to control change of line
@@ -201,25 +206,25 @@ def settings():
     
 #changing color random
     Button_color = pygame.Rect(WIDTH/21, HEIGHT/3, WIDTH//3.8, 40)
-    pygame.draw.rect(screen, colors.get('limeGreen'), Button_color)
+    pygame.draw.rect(screen, colors.get('white'), Button_color)
 
     textcolor = MENU_FONT.render('Random', 1, colors.get('blue'))
     screen.blit(textcolor, (WIDTH/20, HEIGHT/3))
 #back to menu
     Button_3 = pygame.Rect(WIDTH//18, HEIGHT/1.1, WIDTH//4, 40)
-    pygame.draw.rect(screen, colors.get("limeGreen"), Button_3)
+    pygame.draw.rect(screen, colors.get("white"), Button_3)
 
     #buttons for size changing 
     Button_4=pygame.Rect(WIDTH/20, HEIGHT/1.8, WIDTH//7, 40)
     Button_5=pygame.Rect(WIDTH/4, HEIGHT/1.8, WIDTH//5, 40)
-    pygame.draw.rect(screen, colors.get('limeGreen'), Button_4)
-    pygame.draw.rect(screen, colors.get('limeGreen'), Button_5)
+    pygame.draw.rect(screen, colors.get('white'), Button_4)
+    pygame.draw.rect(screen, colors.get('white'), Button_5)
 
     #buttons for sound
     Button_on=pygame.Rect(WIDTH/20, HEIGHT/1.3, WIDTH//6, 40)
     Button_off=pygame.Rect(WIDTH/3, HEIGHT/1.3, WIDTH//6, 40)
-    pygame.draw.rect(screen, colors.get('limeGreen'), Button_on)
-    pygame.draw.rect(screen, colors.get('limeGreen'), Button_off)
+    pygame.draw.rect(screen, colors.get('white'), Button_on)
+    pygame.draw.rect(screen, colors.get('white'), Button_off)
 
     #text for buttons/screen
     screen.blit(title, (WIDTH/2.5,50))
@@ -274,7 +279,6 @@ def settings():
                     settings()
             pygame.display.update()
 
-
 def scoreboard():
     high=0
     title=TITLE_FONT.render('Scoreboard', 1, colors.get('blue'))
@@ -289,16 +293,16 @@ def scoreboard():
     pygame.display.update()
     
     
-    print(score)
+    print(yscore) # referrenced before its been created: yscore
     # if score>high:
     #     high=score
     # scrLine=str(high)+"\t " (':')+ "\t" +date.strftime('%m/%d/%Y')+ "\n"
-    scrLine=str(score)+(': ')+ "\t"+date.strftime("%m-%d-%Y")+ "\n"
-    myFile = open("PygameFiles\scoreboard.txt", "a")
+    scrLine=str(yscore)+(': ')+ "\t"+date.strftime("%m-%d-%Y")+ "\n"
+    myFile = open("Finalproject\\finalscoreboard.py", "a")
     myFile.write(str(scrLine))
     myFile.close()
 
-    myFile=open('pygameFiles\scoreboard.txt', 'r')
+    myFile=open('Finalproject\\finalscoreboard.py', 'r')
     content = myFile.readlines()
 
     #var to controll change of line
@@ -326,6 +330,19 @@ def scoreboard():
                 if Button_3.collidepoint((mx, my)):
                     mainMenu()
 
+    while True:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:
+                    run=False
+                    pygame.display.quit()
+                    print("You quit")
+                if event.type==pygame.MOUSEBUTTONDOWN:
+                    mousePos=pygame.mouse.get_pos()
+                    mx=mousePos[0]
+                    my=mousePos[1]
+                    if Button_3.collidepoint((mx, my)):
+                        mainMenu()
+
 def exit():
     title=TITLE_FONT.render('Bye-Thank you!', 1, colors.get('blue'))
     screen.fill(menuColor)
@@ -339,8 +356,754 @@ def exit():
 
 
 
+
+
+
+def Game_1():
+
+    WIDTH, HEIGHT = 750, 750
+    win = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("Space invaders")
+
+    # Load images
+    RED_SPACE_SHIP = pygame.image.load(os.path.join( "images\pixel_ship_red_small.png"))
+    GREEN_SPACE_SHIP = pygame.image.load(os.path.join( "images\pixel_ship_green_small.png"))
+    BLUE_SPACE_SHIP = pygame.image.load(os.path.join( "images\pixel_ship_blue_small.png"))
+
+    # Player player
+    YELLOW_SPACE_SHIP = pygame.image.load(os.path.join( "images\pixel_ship_yellow.png"))
+
+    # Lasers
+    RED_LASER = pygame.image.load(os.path.join("images\pixel_laser_red.png"))
+    GREEN_LASER = pygame.image.load(os.path.join("images\pixel_laser_green.png"))
+    BLUE_LASER = pygame.image.load(os.path.join( "images\pixel_laser_blue.png"))
+    YELLOW_LASER = pygame.image.load(os.path.join( "images\pixel_laser_yellow.png"))
+
+    # Background
+    BG = pygame.transform.scale(pygame.image.load(os.path.join("images\level2bg.png")), (WIDTH, HEIGHT))
+    Button_3 = pygame.Rect(WIDTH//18, HEIGHT/1.1, WIDTH//4, 40)
+    pygame.draw.rect(screen, colors.get("limeGreen"), Button_3)
+
+
+    class Laser:
+        def __init__(self, x, y, img):
+            self.x = x
+            self.y = y
+            self.img = img
+            self.mask = pygame.mask.from_surface(self.img)
+
+        def draw(self, window):
+            window.blit(self.img, (self.x, self.y))
+
+        def move(self, vel):
+            self.y += vel
+
+        def off_screen(self, height):
+            return not(self.y <= height and self.y >= 0)
+
+        def collision(self, obj):
+            return collide(self, obj)
+            
+
+
+    class Ship:
+        COOLDOWN = 30
+
+        def __init__(self, x, y, health=100):
+            self.x = x
+            self.y = y
+            self.health = health
+            self.ship_img = None
+            self.laser_img = None
+            self.lasers = []
+            self.cool_down_counter = 0
+
+        def draw(self, window):
+            pygame.draw.rect(window, (255,0,0), (self.x, self.y, 0,0))
+            window.blit(self.ship_img, (self.x, self.y))
+            for laser in self.lasers:
+                laser.draw(window)
+
+        def move_lasers(self, vel, obj):
+            self.cooldown()
+            for laser in self.lasers:
+                laser.move(vel)
+                if laser.off_screen(HEIGHT):
+                    self.lasers.remove(laser)
+                elif laser.collision(obj):
+                    obj.health -= 10
+                    self.lasers.remove(laser)
+
+        def cooldown(self):
+            if self.cool_down_counter >= self.COOLDOWN:
+                self.cool_down_counter = 0
+            elif self.cool_down_counter > 0:
+                self.cool_down_counter += 1
+
+        def shoot(self):
+            if self.cool_down_counter == 0:
+                laser = Laser(self.x, self.y, self.laser_img)
+                self.lasers.append(laser)
+                self.cool_down_counter = 1
+
+        def get_width(self):
+            return self.ship_img.get_width()
+
+        def get_height(self):
+            return self.ship_img.get_height()
+
+        score_value= 0
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        textx = 10
+        texty = 10
+
+
+    class Player(Ship):
+        def __init__(self, x, y, health=100):
+            super().__init__(x, y, health)
+            self.ship_img = YELLOW_SPACE_SHIP
+            self.laser_img = YELLOW_LASER
+            #mask means where things are or are not
+            #so when there is a collision we know that a laser was fired
+            self.mask = pygame.mask.from_surface(self.ship_img)
+            self.max_health = health
+
+        def move_lasers(self, vel, objs):
+            self.cooldown()
+            for laser in self.lasers:
+                laser.move(vel)
+                if laser.off_screen(HEIGHT):
+                    self.lasers.remove(laser)
+                else:
+                    for obj in objs:
+                        if laser.collision(obj):
+                            objs.remove(obj)
+                            if laser in self.lasers:
+                                self.lasers.remove(laser)
+
+        def draw(self, window):
+            super().draw(window)
+            self.healthbar(window)
+
+        def healthbar(self, window):
+            pygame.draw.rect(window, (255,0,0), (self.x, self.y + self.ship_img.get_height() + 10, self.ship_img.get_width(), 10))
+            pygame.draw.rect(window, (0,255,0), (self.x, self.y + self.ship_img.get_height() + 10, self.ship_img.get_width() * (self.health/self.max_health), 10))
+
+
+
+    #these are the enemy ship, 
+    #not sure if i should try to move them below into the redraw window
+    class Enemy(Ship):
+        COLOR_MAP = {
+                    "red": (RED_SPACE_SHIP, RED_LASER),
+                    "green": (GREEN_SPACE_SHIP, GREEN_LASER),
+                    "blue": (BLUE_SPACE_SHIP, BLUE_LASER)
+                    }
+
+        def __init__(self, x, y, color, health=100):
+            super().__init__(x, y, health)
+            self.ship_img, self.laser_img = self.COLOR_MAP[color]
+            self.mask = pygame.mask.from_surface(self.ship_img)
+
+        def move(self, vel):
+            self.y += vel
+
+        def shoot(self):
+            if self.cool_down_counter == 0:
+                laser = Laser(self.x-20, self.y, self.laser_img)
+                self.lasers.append(laser)
+                self.cool_down_counter = 1
+
+
+    def collide(obj1, obj2):# the obj is whatever the laser is colliding with
+        offset_x = obj2.x - obj1.x
+        offset_y = obj2.y - obj1.y
+        return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
+
+   
+
+    def main():
+        run = True
+        FPS = 60
+        level = 2
+        lives = 7
+        main_font = pygame.font.SysFont("comicsans", 50)
+        lost_font = pygame.font.SysFont("comicsans", 60)
+
+        enemies = []
+        wave_length = 4
+        enemy_vel = 2
+
+        player_vel = 5#velocity variable which is how fast square can move in a direction
+        laser_vel = 6
+
+        player = Player(300, 630)
+
+        clock = pygame.time.Clock()
+        won_count = 5
+        won = True
+        lost = False
+        lost_count = 0
+
+        
+
+        def redraw_window():
+            #below is where the info for my rectangle and image are
+            #redraw window 3x bc it will restart a life
+            win.blit(BG, (0,0))
+            # draw text
+            lives_label = main_font.render(f"Lives: {lives}", 1, (255,255,255))
+            #text with be drawn at the top of the game so it can be seen by the player
+
+            win.blit(lives_label, (10, 10))
+            #i think this is the position of the square
+    
+            #this is where my enemies appear
+
+            for enemy in enemies:
+                enemy.draw(win)
+
+            player.draw(win)
+
+            if lost:
+                lost_label = lost_font.render("You Lost!!", 1, (255,255,255))
+                win.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
+                Endgame(1)
+                
+
+            pygame.display.update()
+
+        while run:
+            clock.tick(FPS)
+            redraw_window()
+            #ask question about how to lose points
+            #why is the number of lives not changing each time a player is hit
+
+            if lives <= 0 or player.health <= 0:
+                lost = True
+                lost_count += 1
+
+            if lost:
+                if lost_count > FPS * 3:
+                    run = False
+                else:
+                    continue
+
+            if len(enemies) == 0:
+                level += 1
+                wave_length += 5
+                for i in range(wave_length):
+                    enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), random.choice(["red", "blue", "green"]))
+                    enemies.append(enemy)
+
+
+            #keys for moving up,down,right,left
+            #i think this is the position of the square
+            #these keys are for the red square
+            #without them the square will not pop up by themselves
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    quit()
+
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_LEFT] and player.x - player_vel > 0: # left
+                player.x -= player_vel
+            if keys[pygame.K_RIGHT] and player.x + player_vel + player.get_width() < WIDTH: # right
+                player.x += player_vel
+            if keys[pygame.K_UP] and player.y - player_vel > 0: # up
+                player.y -= player_vel
+            if keys[pygame.K_DOWN] and player.y + player_vel + player.get_height() + 15 < HEIGHT: # down
+                player.y += player_vel
+            if keys[pygame.K_SPACE]:
+                player.shoot()
+
+            # meaning: velcotity of square to value of x= will be off the screen
+            #I am having trouble with the red square staying with in the lines of visable areas
+
+            for enemy in enemies[:]:
+                enemy.move(enemy_vel)
+                enemy.move_lasers(laser_vel, player)
+
+                if random.randrange(0, 2*60) == 1:
+                    enemy.shoot()
+
+                if collide(enemy, player):
+                    player.health -= 10
+                    enemies.remove(enemy) 
+                elif enemy.y + enemy.get_height() > HEIGHT:
+                    lives -= 1
+                    enemies.remove(enemy)
+        
+
+
+    
+
+
+            player.move_lasers(-laser_vel, enemies)
+
+    def main_menu():
+        title_font = pygame.font.SysFont("comicsans", 40)
+        run = True
+        while run:
+            win.blit(BG, (0,0))
+            title_label = title_font.render("click on the screen to begin", 1, (255,255,255))
+            win.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 350))
+            pygame.display.update()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+                if event.type == pygame.MOUSEBUTTONDOWN:
                     
 
+                
+                    main()
+        pygame.quit()
+    
+    def display_score(score):
+        score_surf = self.font.render(f'score: {self.score}',False, )
+
+    
+    def zero_Array(): 
+        for x in range(3):
+            row= [0] *3
+            markers.append(row)
+    backgrnd=colors.get('pink')
+
+    
+
+
+
+
+    def Endgame(num):
+        #question
+        
+        
+        screen.fill('Blue')
+        textagn=MENU_FONT.render('Would you like to play again?', 1, (255,255,255))
+        textMOre=MENU_FONT.render('press yes to play again or no!', 2, (255,255,255))
+        screen.blit(textMOre, (WIDTH/3, HEIGHT/2.3))
+        screen.blit(textagn,(WIDTH/3, HEIGHT/2.8))
+        #buttons yes and no
+        Button_yes=pygame.Rect(WIDTH/4, HEIGHT//2, 100, 50) #how to draw a rectangle
+        Button_no=pygame.Rect(3*WIDTH/4, HEIGHT//2, 100, 50)
+        pygame.draw.rect(screen, colors.get('pink'), Button_yes)
+        pygame.draw.rect(screen, colors.get('pink'), Button_no)
+        #text yes and no
+        textYes=MENU_FONT.render('Yes', 1, (255,255,255))
+        textNo=MENU_FONT.render('  No', 1, (255,255,255))
+        screen.blit(textYes, (WIDTH//3.8, HEIGHT//2))
+        screen.blit(textNo, (3*WIDTH//4, HEIGHT//2))
+                   
+        text=MENU_FONT.render('Return to Menu', 1, colors.get('blue'))
+        Button_3 = pygame.Rect(WIDTH//18, HEIGHT/1.1, WIDTH//4, 40)
+        pygame.draw.rect(screen, colors.get("limeGreen"), Button_3)
+        screen.blit(text, (WIDTH//18, HEIGHT/1.1))
+        pygame.display.update()
+
+        while True:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:
+                    run=False
+                    pygame.display.quit()
+                    print("You quit")
+                if event.type==pygame.MOUSEBUTTONDOWN:
+                    mousePos=pygame.mouse.get_pos()
+                    mx=mousePos[0]
+                    my=mousePos[1]
+                    if Button_3.collidepoint((mx, my)):
+                        mainMenu()
+                    if Button_yes.collidepoint((mx, my)):
+
+                        if num==1:
+                            Game_1()
+                        if num==2:
+                            Game_2()
+
+                    if Button_no.collidepoint((mx, my)):
+                        mainMenu()
+                       
+                        
+    
+                
+            
+        
+    
+
+    
+    main_menu()
+
+
+
+
+
+
+
+
+def Game_2():
+        
+    WIDTH, HEIGHT = 750, 750
+    win = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("Space invaders")
+
+    # Load images
+    RED_SPACE_SHIP = pygame.image.load(os.path.join( "images\pixel_ship_red_small.png"))
+    GREEN_SPACE_SHIP = pygame.image.load(os.path.join( "images\pixel_ship_green_small.png"))
+    BLUE_SPACE_SHIP = pygame.image.load(os.path.join( "images\pixel_ship_blue_small.png"))
+
+    # Player player
+    YELLOW_SPACE_SHIP = pygame.image.load(os.path.join( "images\pixel_ship_yellow.png"))
+
+    # Lasers
+    RED_LASER = pygame.image.load(os.path.join("images\pixel_laser_red.png"))
+    GREEN_LASER = pygame.image.load(os.path.join("images\pixel_laser_green.png"))
+    BLUE_LASER = pygame.image.load(os.path.join( "images\pixel_laser_blue.png"))
+    YELLOW_LASER = pygame.image.load(os.path.join( "images\pixel_laser_yellow.png"))
+
+    # Background
+    BG = pygame.transform.scale(pygame.image.load(os.path.join("images\spacebg.png")), (WIDTH, HEIGHT))
+    Button_3 = pygame.Rect(WIDTH//18, HEIGHT/1.1, WIDTH//4, 40)
+    pygame.draw.rect(screen, colors.get("limeGreen"), Button_3)
+
+
+    class Laser:
+        def __init__(self, x, y, img):
+            self.x = x
+            self.y = y
+            self.img = img
+            self.mask = pygame.mask.from_surface(self.img)
+
+        def draw(self, window):
+            window.blit(self.img, (self.x, self.y))
+
+        def move(self, vel):
+            self.y += vel
+
+        def off_screen(self, height):
+            return not(self.y <= height and self.y >= 0)
+
+        def collision(self, obj):
+            return collide(self, obj)
+
+
+    class Ship:
+        COOLDOWN = 30
+
+        def __init__(self, x, y, health=100):
+            self.x = x
+            self.y = y
+            self.health = health
+            self.ship_img = None
+            self.laser_img = None
+            self.lasers = []
+            self.cool_down_counter = 0
+
+        def draw(self, window):
+            pygame.draw.rect(window, (255,0,0), (self.x, self.y, 0,0))
+            window.blit(self.ship_img, (self.x, self.y))
+            for laser in self.lasers:
+                laser.draw(window)
+
+        def move_lasers(self, vel, obj):
+            self.cooldown()
+            for laser in self.lasers:
+                laser.move(vel)
+                if laser.off_screen(HEIGHT):
+                    self.lasers.remove(laser)
+                elif laser.collision(obj):
+                    obj.health -= 10
+                    self.lasers.remove(laser)
+
+        def cooldown(self):
+            if self.cool_down_counter >= self.COOLDOWN:
+                self.cool_down_counter = 0
+            elif self.cool_down_counter > 0:
+                self.cool_down_counter += 1
+
+        def shoot(self):
+            if self.cool_down_counter == 0:
+                laser = Laser(self.x, self.y, self.laser_img)
+                self.lasers.append(laser)
+                self.cool_down_counter = 1
+
+        def get_width(self):
+            return self.ship_img.get_width()
+
+        def get_height(self):
+            return self.ship_img.get_height()
+
+        score_value= 0
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        textx = 10
+        texty = 10
+
+
+    class Player(Ship):
+        def __init__(self, x, y, health=100):
+            super().__init__(x, y, health)
+            self.ship_img = YELLOW_SPACE_SHIP
+            self.laser_img = YELLOW_LASER
+            #mask means where things are or are not
+            #so when there is a collision we know that a laser was fired
+            self.mask = pygame.mask.from_surface(self.ship_img)
+            self.max_health = health
+
+        def move_lasers(self, vel, objs):
+            self.cooldown()
+            for laser in self.lasers:
+                laser.move(vel)
+                if laser.off_screen(HEIGHT):
+                    self.lasers.remove(laser)
+                else:
+                    for obj in objs:
+                        if laser.collision(obj):
+                            objs.remove(obj)
+                            if laser in self.lasers:
+                                self.lasers.remove(laser)
+
+        def draw(self, window):
+            super().draw(window)
+            self.healthbar(window)
+
+        def healthbar(self, window):
+            pygame.draw.rect(window, (255,0,0), (self.x, self.y + self.ship_img.get_height() + 10, self.ship_img.get_width(), 10))
+            pygame.draw.rect(window, (0,255,0), (self.x, self.y + self.ship_img.get_height() + 10, self.ship_img.get_width() * (self.health/self.max_health), 10))
+
+
+
+    #these are the enemy ship, 
+    #not sure if i should try to move them below into the redraw window
+    class Enemy(Ship):
+        COLOR_MAP = {
+                    "red": (RED_SPACE_SHIP, RED_LASER),
+                    "green": (GREEN_SPACE_SHIP, GREEN_LASER),
+                    "blue": (BLUE_SPACE_SHIP, BLUE_LASER)
+                    }
+
+        def __init__(self, x, y, color, health=100):
+            super().__init__(x, y, health)
+            self.ship_img, self.laser_img = self.COLOR_MAP[color]
+            self.mask = pygame.mask.from_surface(self.ship_img)
+
+        def move(self, vel):
+            self.y += vel
+
+        def shoot(self):
+            if self.cool_down_counter == 0:
+                laser = Laser(self.x-20, self.y, self.laser_img)
+                self.lasers.append(laser)
+                self.cool_down_counter = 1
+
+
+    def collide(obj1, obj2):# the obj is whatever the laser is colliding with
+        offset_x = obj2.x - obj1.x
+        offset_y = obj2.y - obj1.y
+        return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
+
+    def main():
+        run = True
+        FPS = 60
+        level = 2
+        lives = 6
+        main_font = pygame.font.SysFont("comicsans", 50)
+        lost_font = pygame.font.SysFont("comicsans", 60)
+
+        enemies = []
+        wave_length = 4
+        enemy_vel = 1
+
+        player_vel = 5#velocity variable which is how fast square can move in a direction
+        laser_vel = 6
+
+        player = Player(300, 630)
+
+        clock = pygame.time.Clock()
+        won_count = 5
+        won = True
+        lost = False
+        lost_count = 0
+
+        
+
+        def redraw_window():
+            #below is where the info for my rectangle and image are
+            #redraw window 3x bc it will restart a life
+            win.blit(BG, (0,0))
+            # draw text
+            lives_label = main_font.render(f"Lives: {lives}", 1, (255,255,255))
+            #text with be drawn at the top of the game so it can be seen by the player
+
+            win.blit(lives_label, (10, 10))
+            #i think this is the position of the square
+    
+            #this is where my enemies appear
+
+            for enemy in enemies:
+                enemy.draw(win)
+
+            player.draw(win)
+
+            if lost:
+                lost_label = lost_font.render("You Lost!!", 1, (255,255,255))
+                win.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
+                Endgame(2)
+
+                
+
+            pygame.display.update()
+
+        while run:
+            clock.tick(FPS)
+            redraw_window()
+            #ask question about how to lose points
+            #why is the number of lives not changing each time a player is hit
+
+            if lives <= 0 or player.health <= 0:
+                lost = True
+                lost_count += 1
+
+            if lost:
+                if lost_count > FPS * 3:
+                    run = False
+                else:
+                    continue
+
+            if len(enemies) == 0:
+                level += 1
+                wave_length += 5
+                for i in range(wave_length):
+                    enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), random.choice(["red", "blue", "green"]))
+                    enemies.append(enemy)
+
+
+            #keys for moving up,down,right,left
+            #i think this is the position of the square
+            #these keys are for the red square
+            #without them the square will not pop up by themselves
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    quit()
+
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_LEFT] and player.x - player_vel > 0: # left
+                player.x -= player_vel
+            if keys[pygame.K_RIGHT] and player.x + player_vel + player.get_width() < WIDTH: # right
+                player.x += player_vel
+            if keys[pygame.K_UP] and player.y - player_vel > 0: # up
+                player.y -= player_vel
+            if keys[pygame.K_DOWN] and player.y + player_vel + player.get_height() + 15 < HEIGHT: # down
+                player.y += player_vel
+            if keys[pygame.K_SPACE]:
+                player.shoot()
+
+            # meaning: velcotity of square to value of x= will be off the screen
+            #I am having trouble with the red square staying with in the lines of visable areas
+
+            for enemy in enemies[:]:
+                enemy.move(enemy_vel)
+                enemy.move_lasers(laser_vel, player)
+
+                if random.randrange(0, 2*60) == 1:
+                    enemy.shoot()
+
+                if collide(enemy, player):
+                    player.health -= 10
+                    enemies.remove(enemy)
+                elif enemy.y + enemy.get_height() > HEIGHT:
+                    lives -= 1
+                    enemies.remove(enemy)
+
+    
+
+
+            player.move_lasers(-laser_vel, enemies)
+
+    def main_menu():
+        title_font = pygame.font.SysFont("comicsans", 40)
+        run = True
+        while run:
+            win.blit(BG, (0,0))
+            title_label = title_font.render("click on the screen to begin", 1, (255,255,255))
+            win.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 350))
+            pygame.display.update()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+                if event.type == pygame.MOUSEBUTTONDOWN:
+
+                
+                    main()
+        pygame.quit()
+
+def Endgame(num):
+        #question
+        
+        
+        screen.fill('Blue')
+        textagn=MENU_FONT.render('Would you like to play again?', 1, (255,255,255))
+        textMOre=MENU_FONT.render('press yes to play again or no!', 2, (255,255,255))
+        screen.blit(textMOre, (WIDTH/3, HEIGHT/2.3))
+        screen.blit(textagn,(WIDTH/3, HEIGHT/2.8))
+        #buttons yes and no
+        Button_yes=pygame.Rect(WIDTH/4, HEIGHT//2, 100, 50) #how to draw a rectangle
+        Button_no=pygame.Rect(3*WIDTH/4, HEIGHT//2, 100, 50)
+        pygame.draw.rect(screen, colors.get('pink'), Button_yes)
+        pygame.draw.rect(screen, colors.get('pink'), Button_no)
+        #text yes and no
+        textYes=MENU_FONT.render('Yes', 1, (255,255,255))
+        textNo=MENU_FONT.render('  No', 1, (255,255,255))
+        screen.blit(textYes, (WIDTH//3.8, HEIGHT//2))
+        screen.blit(textNo, (3*WIDTH//4, HEIGHT//2))
+                   
+        text=MENU_FONT.render('Return to Menu', 1, colors.get('blue'))
+        Button_3 = pygame.Rect(WIDTH//18, HEIGHT/1.1, WIDTH//4, 40)
+        pygame.draw.rect(screen, colors.get("limeGreen"), Button_3)
+        screen.blit(text, (WIDTH//18, HEIGHT/1.1))
+        pygame.display.update()
+
+        while True:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:
+                    run=False
+                    pygame.display.quit()
+                    print("You quit")
+                if event.type==pygame.MOUSEBUTTONDOWN:
+                    mousePos=pygame.mouse.get_pos()
+                    mx=mousePos[0]
+                    my=mousePos[1]
+                    if Button_3.collidepoint((mx, my)):
+                        mainMenu()
+                    if Button_yes.collidepoint((mx, my)):
+
+                        if num==1:
+                            Game_1()
+                        if num==2:
+                            Game_2()
+
+                    if Button_no.collidepoint((mx, my)):
+                        mainMenu()
+                       
+                           
+    
+
+    
+
+
+
+
+
+      
+        
+        
+        
+    
+
+    
+    
+
+        
+
+
+            
     
 namebox()  
 print("1")    
