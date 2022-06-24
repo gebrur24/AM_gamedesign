@@ -1,0 +1,12 @@
+
+
+Hi player! You are about to start playing 
+SPACE INVADERS.
+Remeber that the keys left, right, up, 
+down are what you use to move your ship.
+
+The goal of the game is to destory all the 
+enemy ships coming from above. 
+
+Goodluck and complete the mission!!
+  

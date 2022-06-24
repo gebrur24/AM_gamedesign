@@ -336,7 +336,7 @@ def exit():
     pygame.time.delay(1000)
     pygame.display.quit()
 
-def Game1 ():
+
 
 
 
