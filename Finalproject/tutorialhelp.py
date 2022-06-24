@@ -1,168 +1,166 @@
 import pygame
-import random
-import math
-from pygame import mixer
- 
-# initializing pygame
+import os
+pygame.font.init()
+pygame.mixer.init()
+
+# initialize pygame
+
 pygame.init()
- 
-# creating screen
-screen_width = 800
-screen_height = 600
-screen = pygame.display.set_mode((screen_width,
-                                  screen_height))
- 
-# caption and icon
-pygame.display.set_caption("Welcome to Space\
-Invaders Game by:- styles")
- 
- 
-# Score
-score_val = 0
-scoreX = 5
-scoreY = 5
-font = pygame.font.Font('freesansbold.ttf', 20)
- 
-# Game Over
-game_over_font = pygame.font.Font('freesansbold.ttf', 64)
- 
- 
-def show_score(x, y):
-    score = font.render("Points: " + str(score_val),
-                        True, (255,255,255))
-    screen.blit(score, (x , y ))
- 
-def game_over():
-    game_over_text = game_over_font.render("GAME OVER",
-                                           True, (255,255,255))
-    screen.blit(game_over_text, (190, 250))
- 
- 
-# player
-playerImage = pygame.image.load('images\pixel_ship_yellow.png')
-player_X = 370
-player_Y = 523
-player_Xchange = 0
- 
-# Invader
-invaderImage = []
-invader_X = []
-invader_Y = []
-invader_Xchange = []
-invader_Ychange = []
-no_of_invaders = 8
- 
-for num in range(no_of_invaders):
-    invaderImage.append(pygame.image.load('images\pixel_ship_green_small.png'))
-    invader_X.append(random.randint(64, 737))
-    invader_Y.append(random.randint(30, 180))
-    invader_Xchange.append(1.2)
-    invader_Ychange.append(50)
- 
-# Bullet
-# rest - bullet is not moving
-# fire - bullet is moving
-bulletImage = pygame.image.load('images\pixel_laser_red.png')
-bullet_X = 0
-bullet_Y = 500
-bullet_Xchange = 0
-bullet_Ychange = 3
-bullet_state = "rest"
- 
-# Collision Concept
-def isCollision(x1, x2, y1, y2):
-    distance = math.sqrt((math.pow(x1 - x2,2)) +
-                         (math.pow(y1 - y2,2)))
-    if distance <= 50:
-        return True
-    else:
-        return False
- 
-def player(x, y):
-    screen.blit(playerImage, (x - 16, y + 10))
- 
-def invader(x, y, i):
-    screen.blit(invaderImage[i], (x, y))
- 
-def bullet(x, y):
-    global bullet_state
-    screen.blit(bulletImage, (x, y))
-    bullet_state = "fire"
- 
-# game loop
-running = True
-while running:
- 
-    # RGB
-    screen.fill((0, 0, 0))
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
- 
-        # Controlling the player movement
-        # from the arrow keys
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                player_Xchange = -1.7
-            if event.key == pygame.K_RIGHT:
-                player_Xchange = 1.7
-            if event.key == pygame.K_SPACE:
-               
-                # Fixing the change of direction of bullet
-                if bullet_state is "rest":
-                    bullet_X = player_X
-                    bullet(bullet_X, bullet_Y)
-        if event.type == pygame.KEYUP:
-            player_Xchange = 0
- 
-    # adding the change in the player position
-    player_X += player_Xchange
-    for i in range(no_of_invaders):
-        invader_X[i] += invader_Xchange[i]
- 
-    # bullet movement
-    if bullet_Y <= 0:
-        bullet_Y = 600
-        bullet_state = "rest"
-    if bullet_state is "fire":
-        bullet(bullet_X, bullet_Y)
-        bullet_Y -= bullet_Ychange
- 
-    # movement of the invader
-    for i in range(no_of_invaders):
-         
-        if invader_Y[i] >= 450:
-            if abs(player_X-invader_X[i]) < 40:
-                for j in range(no_of_invaders):
-                    invader_Y[j] = 2000
-                game_over()
-                break
- 
-        if invader_X[i] >= 735 or invader_X[i] <= 0:
-            invader_Xchange[i] *= -1
-            invader_Y[i] += invader_Ychange[i]
-        # Collision
-        collision = isCollision(bullet_X, invader_X[i],
-                                bullet_Y, invader_Y[i])
-        if collision:
-            score_val += 1
-            bullet_Y = 600
-            bullet_state = "rest"
-            invader_X[i] = random.randint(64, 736)
-            invader_Y[i] = random.randint(30, 200)
-            invader_Xchange[i] *= -1
- 
-        invader(invader_X[i], invader_Y[i], i)
- 
- 
-    # restricting the spaceship so that
-    # it doesn't go out of screen
-    if player_X <= 20:
-        player_X = 20
-    elif player_X >= 800:
-        player_X = 800
- 
- 
-    player(player_X, player_Y)
-    show_score(scoreX, scoreY)
+WIDTH, HEIGHT = 800, 500
+# Create the Screen
+WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("SPACE INVADERS __ SANISHA")
+WHITE = (255, 255, 255)
+BLACK = (200, 100, 20)
+RED = (255, 0, 0)
+YELLOW = (255, 200, 100)
+
+BORDER = pygame.Rect(WIDTH//2-5, 0, 10, HEIGHT)
+
+HEALTH_font = pygame.font.SysFont('Ariel', 20)
+WINNER_font = pygame.font.SysFont('Ariel', 120)
+
+
+fps = 60
+VEL = 2
+
+BULLET_VEL = 7
+MAX_BULLETS = 3
+SPSHIP_WIDTH = 50
+SPSHIP_HEIGHT = 38
+
+YELLOW_HIT = pygame.USEREVENT + 1
+RED_HIT = pygame.USEREVENT + 2
+
+YELLOW_SPACESHIP_IMAGE = pygame.image.load(os.path.join('images\pixel_ship_yellow.png'))
+YELLOW_SPACESHIP = pygame.transform.rotate(pygame.transform.scale(YELLOW_SPACESHIP_IMAGE, (SPSHIP_WIDTH, SPSHIP_HEIGHT)), 90)
+RED_SPACESHIP_IMAGE = pygame.image.load(os.path.join('images\pixel_ship_red_small.png'))
+RED_SPACESHIP = pygame.transform.rotate(pygame.transform.scale(RED_SPACESHIP_IMAGE, (SPSHIP_WIDTH, SPSHIP_HEIGHT)), 270)
+
+SPACE = pygame.transform.scale(pygame.image.load(os.path.join('images\pixel_ship_blue_small.png')), (WIDTH, HEIGHT))
+
+def draw_window(red, yellow, red_bullets, yellow_bullets, red_health, yellow_health):
+    WIN.blit(SPACE, (0, 0))
+    pygame.draw.rect(WIN, BLACK, BORDER)
+    
+    red_health_text = HEALTH_font.render("Health : " + str(red_health), 1, WHITE)
+    yellow_health_text = HEALTH_font.render("Health : " + str(yellow_health), 1, WHITE)
+
+    WIN.blit(red_health_text, (WIDTH - red_health_text.get_width() -10, 10))
+    WIN.blit(yellow_health_text, (10, 10))
+
+    WIN.blit(YELLOW_SPACESHIP, (yellow.x, yellow.y))
+    WIN.blit(RED_SPACESHIP, (red.x, red.y))
+
+    for bullet in red_bullets:
+        pygame.draw.rect(WIN, RED, bullet)
+    for bullet in yellow_bullets:
+        pygame.draw.rect(WIN, YELLOW, bullet)
+
     pygame.display.update()
+
+
+def yellow_handle_movement(keys_pressed, yellow):
+    if keys_pressed[pygame.K_a] and yellow.x - VEL > 0:  # LEFT
+        yellow.x -= VEL
+    if keys_pressed[pygame.K_d] and yellow.x + VEL + yellow.width< BORDER.x:  # RIGHT
+        yellow.x += VEL
+    if keys_pressed[pygame.K_w] and yellow.y - VEL > 0:  # UP
+        yellow.y -= VEL
+    if keys_pressed[pygame.K_s] and yellow.y + VEL + yellow.height < HEIGHT - 15: # DOWN
+        yellow.y += VEL
+
+
+def red_handle_movement(keys_pressed, red):
+    if keys_pressed[pygame.K_LEFT] and red.x - VEL > BORDER.x + BORDER.width + 10:  # LEFT   # LEFT
+        red.x -= VEL
+    if keys_pressed[pygame.K_RIGHT] and red.x + VEL + red.width < WIDTH:   # LEFT
+        red.x += VEL
+    if keys_pressed[pygame.K_UP] and red.y - VEL > 0:  # UP
+        red.y -= VEL
+    if keys_pressed[pygame.K_DOWN] and red.y + VEL + red.height < HEIGHT - 15: # DOWN
+        red.y += VEL
+
+def  handle_bullets(yellow_bullets, red_bullets, yellow, red):
+    for bullet in yellow_bullets:
+        bullet.x += BULLET_VEL
+        if red.colliderect(bullet):
+            pygame.event.post(pygame.event.Event(RED_HIT))
+            yellow_bullets.remove(bullet)
+        elif bullet.x > WIDTH:
+            yellow_bullets.remove(bullet)
+            
+    for bullet in red_bullets:
+        bullet.x -= BULLET_VEL
+        if yellow.colliderect(bullet):
+            pygame.event.post(pygame.event.Event(YELLOW_HIT))
+            red_bullets.remove(bullet)
+        elif bullet.x < 0:
+            red_bullets.remove(bullet)
+
+def draw_winner(text):
+    draw_text = WINNER_font.render(text, 1, WHITE)
+    WIN.blit(draw_text, (WIDTH//2 - draw_text.get_width()/2, HEIGHT/2 - draw_text.get_height()/2))
+    pygame.display.update()
+
+    pygame.time.delay(5000)
+
+def main():
+    red = pygame.Rect(700, 300, SPSHIP_WIDTH, SPSHIP_HEIGHT)
+    yellow = pygame.Rect(100, 300, SPSHIP_WIDTH, SPSHIP_HEIGHT)
+    clock = pygame.time.Clock()
+
+    red_bullets = []
+    yellow_bullets = []
+
+    red_health = 10
+    yellow_health = 10
+
+    run = True
+    while run:
+        clock.tick(fps)
+        keys_pressed = pygame.key.get_pressed() 
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+                pygame.quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LCTRL and len(yellow_bullets) < MAX_BULLETS:
+                    bullet = pygame.Rect(yellow.x + yellow.width - 20, yellow.y + yellow.height//2 + 5, 10, 5)
+                    yellow_bullets.append(bullet)
+                    BULLET_FIRE_SOUND.play()
+
+                if event.key == pygame.K_RCTRL and len(red_bullets) < MAX_BULLETS:
+                    bullet = pygame.Rect(red.x, red.y + red.height//2 + 5, 10, 5)
+                    red_bullets.append(bullet)
+                    BULLET_FIRE_SOUND.play()
+
+            if event.type == RED_HIT:
+                red_health -= 1
+                BULLET_HIT_SOUND.play()
+
+            if event.type == YELLOW_HIT:
+                yellow_health -= 1
+                BULLET_HIT_SOUND.play()
+
+        winner_text = ""
+        if red_health <= 0:
+           winner_text = "Yellow Wins!"
+        if yellow_health <= 0:
+           winner_text = "Red Wins!"
+        if winner_text != "":
+           draw_winner(winner_text)
+           break
+
+        yellow_handle_movement(keys_pressed, yellow)
+        red_handle_movement(keys_pressed, red)
+
+        handle_bullets(yellow_bullets, red_bullets, yellow, red)
+
+        draw_window(red, yellow, red_bullets, yellow_bullets, red_health, yellow_health)
+    main()
+
+if __name__ == "__main__":
+    main()
