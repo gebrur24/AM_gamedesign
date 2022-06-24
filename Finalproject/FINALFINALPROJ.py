@@ -754,11 +754,25 @@ def Level_1():
 
 #new game
 
+score_val = 0
+scoreX = 5
+scoreY = 5
+font = pygame.font.Font('freesansbold.ttf', 20)
+ 
+# Game Over
+game_over_font = pygame.font.Font('freesansbold.ttf', 64)
+ 
+ 
+def show_score(x, y):
+    score = font.render("Points: " + str(score_val),
+                        True, (255,255,255))
+    screen.blit(score, (x , y ))
+ 
 
 def Level_2():
     global screen
     class Game:
-
+       
         screen = None
         aliens = []
         rockets = []
@@ -825,10 +839,11 @@ def Level_2():
             self.size = 20
 
         def draw(self):
-            pygame.draw.circle(self.game.screen,  
+            pygame.draw.rect(self.game.screen,  
                             ('pink'),  
                             pygame.Rect(self.x, self.y, self.size, self.size))
             self.y += 0.05
+            
 
         def checkCollision(self, game):
             for rocket in game.rockets:
@@ -882,6 +897,21 @@ def Level_2():
 
     Button_3 = pygame.Rect(WIDTH//18, HEIGHT/1.1, WIDTH//4, 40)
     pygame.draw.rect(screen, colors.get("limeGreen"), Button_3)
+
+
+score_val = 0
+scoreX = 5
+scoreY = 5
+font = pygame.font.Font('freesansbold.ttf', 20)
+ 
+# Game Over
+game_over_font = pygame.font.Font('freesansbold.ttf', 64)
+ 
+ 
+def show_score(x, y):
+    score = font.render("Points: " + str(score_val),
+                        True, (255,255,255))
+    screen.blit(score, (x , y ))
 
 def Endgame(num):
         #question
