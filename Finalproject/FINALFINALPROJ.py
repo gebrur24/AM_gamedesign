@@ -13,7 +13,7 @@ MENU_FONT = pygame.font.SysFont('comicsans', WIDTH//30)
 colors={"white":(255,255,255),"pink":(255,0,255),"blue":(0,0,255),"limeGreen":(153,255,51), 'red':(255, 0, 0), 'purple': (138,43,226), 'yellow':(255,215,0), 'black':(0,0,0), 'lblue':(0,206,209)}
 clock=pygame.time.Clock()
 
-message=['Instructions', 'Settings', 'Game 1', 'Game 2', 'Scoreboard', 'Exit']
+message=['Instructions', 'Settings', 'Level 1', 'Level 2', 'Scoreboard', 'Exit']
 #create dispay wind with any name y like
 screen=pygame.display.set_mode((WIDTH,HEIGHT)) 
 pygame.display.set_caption("My final game")  #change the title of my window
@@ -93,13 +93,13 @@ def mainMenu():#mainmenu
                 if Button_settings.collidepoint((mx, my)):
                     settings()
                 if Button_Game1.collidepoint((mx, my)):
-                    Game_1()
+                    Level_1()
                 if Button_score.collidepoint((mx, my)):
                     scoreboard()
                 if Button_exit.collidepoint((mx, my)):
                     exit()
                 if Button_Game2.collidepoint((mx, my)):
-                    Game_2()
+                    Level_2()
     
 def Instructions():
     #rendering text objects
@@ -232,11 +232,7 @@ def settings():
     pygame.draw.rect(screen, colors.get('white'), Button_4)
     pygame.draw.rect(screen, colors.get('white'), Button_5)
 
-    #buttons for sound
-    Button_on=pygame.Rect(WIDTH/20, HEIGHT/1.3, WIDTH//6, 40)
-    Button_off=pygame.Rect(WIDTH/3, HEIGHT/1.3, WIDTH//6, 40)
-    pygame.draw.rect(screen, colors.get('white'), Button_on)
-    pygame.draw.rect(screen, colors.get('white'), Button_off)
+    
 
     #text for buttons/screen
     screen.blit(title, (WIDTH/2.5,50))
@@ -246,12 +242,9 @@ def settings():
     screen.blit(text5, (WIDTH/18, HEIGHT/1.8))
     screen.blit(text6, (WIDTH/4, HEIGHT/1.8))
     
-    text7=MENU_FONT.render('Sound On', 1, colors.get('blue'))
-    text8=MENU_FONT.render('Sound Off', 1, colors.get('blue'))
-    screen.blit(text7, (WIDTH/18, HEIGHT/1.3))
-    screen.blit(text8, (WIDTH/3, HEIGHT/1.3))
+    
     text10=MENU_FONT.render('Change screen size:', 1, colors.get('blue'))
-    text11=MENU_FONT.render('Change sound settings:', 1, colors.get('blue'))
+    text11=MENU_FONT.render('yay! get ready for fun!', 1, colors.get('blue'))
     screen.blit(text10, (WIDTH/18, HEIGHT/2.1))
     screen.blit(text11, (WIDTH/18, HEIGHT/1.5))
 
@@ -367,12 +360,13 @@ def exit():
     pygame.display.quit()
 
 
+#source/reference i used was was from youtube 
+#the channel was called tech with tim
 
 
 
 
-
-def Game_1():
+def Level_1():
 
     WIDTH, HEIGHT = 750, 750
     win = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -526,7 +520,7 @@ def Game_1():
             if self.cool_down_counter == 0:
                 laser = Laser(self.x-20, self.y, self.laser_img)
                 self.lasers.append(laser)
-                score+=1 #plus one for their score for the laser
+                #plus one for their score for the laser
                 #basically every shoot or kill is plus one point
                 self.cool_down_counter = 1
 
@@ -534,7 +528,6 @@ def Game_1():
     def collide(obj1, obj2):# the obj is whatever the laser is colliding with
         offset_x = obj2.x - obj1.x
         offset_y = obj2.y - obj1.y
-        score+=1
         return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
        
 
@@ -736,9 +729,9 @@ def Game_1():
                     if Button_yes.collidepoint((mx, my)):
 
                         if num==1:
-                            Game_1()
+                            Level_1()
                         if num==2:
-                            Game_2()
+                            Level_2()
 
                     if Button_no.collidepoint((mx, my)):
                         mainMenu()
@@ -760,7 +753,9 @@ def Game_1():
 
 
 #new game
-def Game_2():
+
+
+def Level_2():
     global screen
     class Game:
 
@@ -838,7 +833,7 @@ def Game_2():
         def checkCollision(self, game):
             for rocket in game.rockets:
                 if (rocket.x < self.x + self.size and
-                        rocket.x > self.x - self.size and
+                        rocket.x > self.x - self.size and# the collison of the laser/rocket hitting
                         rocket.y < self.y + self.size and
                         rocket.y > self.y - self.size):
                     game.rockets.remove(rocket)
@@ -847,7 +842,7 @@ def Game_2():
 
     class Hero:
         def __init__(self, game, x, y):
-            self.x = x
+            self.x = x #self is the person 
             self.game = game
             self.y = y
 
@@ -928,9 +923,9 @@ def Endgame(num):
                     if Button_yes.collidepoint((mx, my)):
 
                         if num==1:
-                            Game_1()
+                            Level_1()
                         if num==2:
-                            Game_2()
+                            Level_2()
 
                     if Button_no.collidepoint((mx, my)):
                         mainMenu()
